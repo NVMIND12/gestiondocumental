@@ -1,0 +1,15 @@
+{
+  "name": "sistema-gestion-documental",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "build": "node build.mjs"
+  },
+  "dependencies": {
+    "@netlify/blobs": "^10.7.10"
+  },
+  "engines": {
+    "node": ">=20"
+  }
+}

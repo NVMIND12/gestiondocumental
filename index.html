@@ -1,0 +1,63 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Registro simple y centralizado de decretos">
+  <title>Sistema de Gestión Documental</title>
+  <style>
+    :root{--blue:#072e6d;--yellow:#ffbd00;--gray:#6f6f6e;--pale:#f5f6f8;--line:#e2e5e9;--white:#fff}
+    *{box-sizing:border-box}body{margin:0;background:var(--pale);color:var(--blue);font-family:Arial,sans-serif}button,input,textarea{font:inherit}button{cursor:pointer}
+    .topbar{height:76px;background:var(--blue);color:white;padding:0 max(24px,calc((100vw - 1180px)/2));display:flex;align-items:center;gap:13px;box-shadow:0 3px 12px #072e6d26}
+    .brand-mark{width:40px;height:40px;display:grid;place-items:center;border-radius:8px;background:var(--yellow);color:var(--blue);font-weight:900}
+    .brand-copy strong,.brand-copy span{display:block}.brand-copy strong{font-size:14px}.brand-copy span{margin-top:3px;color:#c9d5e7;font-size:10px}
+    .status-dot{margin-left:auto;color:#dce5f1;font-size:11px}.status-dot i{display:inline-block;width:7px;height:7px;border-radius:50%;margin-right:6px;background:var(--yellow)}
+    .page{width:min(1180px,calc(100% - 40px));margin:auto;padding:35px 0 60px}.intro{display:flex;justify-content:space-between;align-items:flex-end;margin-bottom:24px}
+    .eyebrow{color:var(--gray);font-size:9px;font-weight:800;letter-spacing:1.8px}h1{margin:7px 0 3px;font-size:31px;letter-spacing:-1px}
+    .intro p,.section-title p,.list-head p{margin:0;color:var(--gray);font-size:12px}.date-chip{padding-left:16px;border-left:3px solid var(--yellow);text-align:right}.date-chip span,.date-chip strong{display:block}.date-chip span{color:var(--gray);font-size:8px}.date-chip strong{margin-top:4px;text-transform:capitalize;font-size:13px}
+    .dashboard{display:grid;grid-template-columns:190px 190px 1fr;gap:14px;margin-bottom:18px}.metric,.chart-card,.entry-card,.list-card{background:white;border:1px solid var(--line);border-radius:10px;box-shadow:0 3px 12px #072e6d08}
+    .metric{min-height:124px;display:flex;align-items:center;padding:20px;gap:14px}.metric-icon{width:42px;height:42px;border-radius:9px;display:grid;place-items:center;background:var(--blue);color:white;font-weight:800}.metric-icon.yellow{background:var(--yellow);color:var(--blue)}
+    .metric small,.metric strong{display:block}.metric small{color:var(--gray);font-size:10px}.metric strong{margin-top:5px;font-size:28px}
+    .chart-card{min-height:124px;padding:15px 20px;display:grid;grid-template-columns:145px 1fr;align-items:center}.chart-heading strong,.chart-heading small{display:block}.chart-heading strong{font-size:12px}.chart-heading small{color:var(--gray);margin-top:4px;font-size:9px}.chart-heading button{border:0;background:none;color:var(--blue);padding:8px 0 0;font-size:9px;font-weight:750}
+    .mini-chart{height:82px;display:flex;justify-content:space-around;align-items:flex-end;gap:9px}.bar{width:42px;height:82px;padding:0;border:0;background:none;display:flex;flex-direction:column;justify-content:flex-end;align-items:center;gap:6px}.bar span{width:17px;min-height:8px;background:#d5d9df;border-radius:4px 4px 2px 2px;transition:.2s}.bar:hover span,.bar.active span{background:var(--yellow)}.bar b{color:var(--gray);font-size:8px;text-transform:uppercase}.bar.active b{color:var(--blue)}
+    .work-grid{display:grid;grid-template-columns:350px 1fr;gap:18px;align-items:start}.entry-card,.list-card{padding:22px}.section-title{display:flex;gap:11px;align-items:center;padding-bottom:18px;border-bottom:1px solid var(--line);margin-bottom:18px}.section-title>span{width:31px;height:31px;border-radius:7px;display:grid;place-items:center;background:var(--yellow);font-size:20px;font-weight:700}h2{margin:0 0 4px;font-size:15px}
+    label{display:block;margin-bottom:15px;color:var(--gray);font-size:10px;font-weight:700}input,textarea{width:100%;border:1px solid #d5d9df;border-radius:7px;outline:0;margin-top:6px;padding:10px 11px;color:var(--blue);background:white}input:focus,textarea:focus{border-color:var(--blue);box-shadow:0 0 0 3px #072e6d12}textarea{height:108px;resize:vertical;line-height:1.45}
+    .save-button{width:100%;border:0;border-radius:7px;padding:11px;color:var(--blue);background:var(--yellow);font-weight:800}.save-button:disabled{opacity:.65}.form-message{color:var(--gray);margin:12px 0 0;font-size:10px}
+    .list-card{min-height:405px}.list-head{display:flex;justify-content:space-between;align-items:center;padding-bottom:18px;border-bottom:1px solid var(--line)}.search{width:210px;margin:0}.search input{margin:0}.decree-list{margin-top:4px}
+    .decree-row{min-height:72px;padding:12px 5px;display:grid;grid-template-columns:105px 1fr 70px;align-items:center;gap:16px;border-bottom:1px solid #eceef1}.number-box{border-left:3px solid var(--yellow);padding-left:10px}.number-box small,.number-box strong,.decree-copy strong,.decree-copy span{display:block}.number-box small{color:var(--gray);font-size:7px}.number-box strong{margin-top:3px;font-size:12px}.decree-copy strong{color:#333;font-size:11px;line-height:1.4}.decree-copy span,.decree-row time{color:var(--gray);font-size:9px}.decree-copy span{margin-top:4px}.decree-row time{justify-self:end}
+    .empty{min-height:270px;display:flex;flex-direction:column;justify-content:center;align-items:center;color:var(--gray);text-align:center}.empty strong{color:var(--blue);font-size:11px}.empty p{font-size:9px}
+    @media(max-width:850px){.dashboard{grid-template-columns:1fr 1fr}.chart-card{grid-column:span 2}.work-grid{grid-template-columns:1fr}}@media(max-width:560px){.page{width:calc(100% - 24px);padding-top:24px}.topbar{padding:0 15px}.status-dot,.date-chip{display:none}.metric{min-height:100px;padding:13px}.metric-icon{display:none}.chart-card{grid-template-columns:95px 1fr;padding:12px}.entry-card,.list-card{padding:17px}.list-head{align-items:flex-start;gap:12px}.search{width:145px}.decree-row{grid-template-columns:95px 1fr}.decree-row time{display:none}}
+  </style>
+</head>
+<body>
+  <header class="topbar"><div class="brand-mark">GD</div><div class="brand-copy"><strong>Sistema de Gestión Documental</strong><span>Registro simple de decretos</span></div><div class="status-dot"><i></i>Datos centralizados</div></header>
+  <main class="page">
+    <section class="intro"><div><span class="eyebrow">GESTIÓN DOCUMENTAL</span><h1>Decretos</h1><p>Registra y consulta los decretos en un solo lugar.</p></div><div class="date-chip"><span>HOY</span><strong id="today"></strong></div></section>
+    <section class="dashboard">
+      <article class="metric"><span class="metric-icon">D</span><div><small>Total de decretos</small><strong id="total">0</strong></div></article>
+      <article class="metric"><span class="metric-icon yellow">M</span><div><small>Este mes</small><strong id="thisMonth">0</strong></div></article>
+      <article class="chart-card"><div class="chart-heading"><strong>Actividad mensual</strong><small>Últimos 6 meses</small><button id="clearFilter" hidden>Ver todos</button></div><div class="mini-chart" id="chart"></div></article>
+    </section>
+    <section class="work-grid">
+      <form class="entry-card" id="decreeForm"><div class="section-title"><span>+</span><div><h2>Nuevo decreto</h2><p>Ingresa los datos básicos del documento.</p></div></div><label>Número de decreto<input name="number" required placeholder="Ej. 1245"></label><label>Fecha del decreto<input name="date" type="date" required></label><label>Descripción<textarea name="description" required maxlength="500" placeholder="Escribe una breve descripción del decreto..."></textarea></label><button class="save-button" id="saveButton">Guardar decreto</button><p class="form-message" id="message"></p></form>
+      <section class="list-card"><div class="list-head"><div><h2 id="listTitle">Decretos registrados</h2><p id="resultCount">0 resultados</p></div><label class="search"><input id="search" placeholder="Buscar decreto..."></label></div><div class="decree-list" id="decreeList"><div class="empty">Cargando decretos...</div></div></section>
+    </section>
+  </main>
+  <script>
+    let decrees=[];let selectedMonth=null;
+    const $=id=>document.getElementById(id);
+    const escapeHtml=value=>String(value).replace(/[&<>"']/g,char=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#039;"}[char]));
+    const monthKey=date=>`${date.getFullYear()}-${String(date.getMonth()+1).padStart(2,"0")}`;
+    $("today").textContent=new Intl.DateTimeFormat("es-CL",{day:"2-digit",month:"long"}).format(new Date());
+    function months(){const now=new Date();return Array.from({length:6},(_,i)=>{const date=new Date(now.getFullYear(),now.getMonth()-5+i,1);const key=monthKey(date);return{key,label:new Intl.DateTimeFormat("es-CL",{month:"short"}).format(date).replace(".",""),count:decrees.filter(d=>d.date.startsWith(key)).length}})}
+    function render(){const query=$("search").value.trim().toLowerCase();const visible=decrees.filter(d=>(!selectedMonth||d.date.startsWith(selectedMonth))&&(!query||d.number.toLowerCase().includes(query)||d.description.toLowerCase().includes(query)));$("total").textContent=decrees.length;$("thisMonth").textContent=decrees.filter(d=>d.date.startsWith(monthKey(new Date()))).length;$("resultCount").textContent=`${visible.length} resultados`;$("listTitle").textContent=selectedMonth?"Decretos del periodo":"Decretos registrados";$("clearFilter").hidden=!selectedMonth;
+      const data=months(),max=Math.max(1,...data.map(x=>x.count));$("chart").innerHTML=data.map(x=>`<button class="bar ${selectedMonth===x.key?"active":""}" data-month="${x.key}" title="${x.count} decretos"><span style="height:${Math.max(8,x.count/max*54)}px"></span><b>${x.label}</b></button>`).join("");
+      $("decreeList").innerHTML=visible.length?visible.map(d=>`<article class="decree-row"><div class="number-box"><small>DECRETO</small><strong>N° ${escapeHtml(d.number)}</strong></div><div class="decree-copy"><strong>${escapeHtml(d.description)}</strong><span>${new Intl.DateTimeFormat("es-CL",{day:"2-digit",month:"short",year:"numeric"}).format(new Date(d.date+"T12:00:00"))}</span></div><time>${new Intl.DateTimeFormat("es-CL",{day:"2-digit",month:"2-digit",year:"2-digit"}).format(new Date(d.date+"T12:00:00"))}</time></article>`).join(""):`<div class="empty"><strong>No hay decretos registrados</strong><p>Los nuevos decretos aparecerán aquí.</p></div>`;
+    }
+    $("chart").addEventListener("click",e=>{const button=e.target.closest("[data-month]");if(button){selectedMonth=selectedMonth===button.dataset.month?null:button.dataset.month;render()}});
+    $("clearFilter").onclick=()=>{selectedMonth=null;render()};$("search").oninput=render;
+    $("decreeForm").onsubmit=async e=>{e.preventDefault();const button=$("saveButton"),form=new FormData(e.currentTarget);button.disabled=true;button.textContent="Guardando...";$("message").textContent="";const decree={id:crypto.randomUUID(),number:String(form.get("number")).trim(),date:String(form.get("date")),description:String(form.get("description")).trim(),createdAt:new Date().toISOString()};try{const response=await fetch("/api/decrees",{method:"POST",headers:{"content-type":"application/json"},body:JSON.stringify(decree)});if(!response.ok)throw new Error();decrees.unshift(decree);e.currentTarget.reset();$("message").textContent=`Decreto N° ${decree.number} guardado correctamente.`;render()}catch{$("message").textContent="No fue posible guardar el decreto."}finally{button.disabled=false;button.textContent="Guardar decreto"}};
+    fetch("/api/decrees").then(r=>{if(!r.ok)throw new Error();return r.json()}).then(data=>{decrees=data;render()}).catch(()=>{$("decreeList").innerHTML='<div class="empty"><strong>No fue posible conectar</strong><p>Revisa la configuración de Netlify.</p></div>'});
+  </script>
+</body>
+</html>
