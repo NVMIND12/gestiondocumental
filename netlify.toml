@@ -1,0 +1,15 @@
+[build]
+  command = "npm run build"
+  publish = ".next"
+  functions = "netlify/functions"
+
+[[redirects]]
+  from = "/api/decrees"
+  to = "/.netlify/functions/decrees"
+  status = 200
+
+[functions]
+  node_bundler = "esbuild"
+
+[[plugins]]
+  package = "@netlify/plugin-nextjs"
